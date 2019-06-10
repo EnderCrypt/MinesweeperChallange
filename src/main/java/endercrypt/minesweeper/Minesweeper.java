@@ -112,7 +112,6 @@ public class Minesweeper
 
 	public void print()
 	{
-		System.out.println("State: " + this.information.getGameState());
 		System.out.println(getAscii());
 		System.out.println();
 	}
