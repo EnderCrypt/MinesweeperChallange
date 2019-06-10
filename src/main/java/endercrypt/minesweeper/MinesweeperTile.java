@@ -101,7 +101,14 @@ public class MinesweeperTile extends MinesweeperChild
 			else
 			{
 				int neighbours = neighbours().countMines();
-				sb.append((char) ('0' + neighbours));
+				if (neighbours == 0)
+				{
+					sb.append(' ');
+				}
+				else
+				{
+					sb.append((char) ('0' + neighbours));
+				}
 			}
 			sb.append(" ");
 			return sb.toString();
