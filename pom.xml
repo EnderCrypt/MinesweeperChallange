@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.jooq</groupId>
-			<artifactId>jool</artifactId>
+			<artifactId>jool-java-8</artifactId>
 			<version>0.9.13</version>
 		</dependency>
 	</dependencies>
