@@ -72,15 +72,9 @@ public class MinesweeperTile extends MinesweeperChild
 		this.open = true;
 		if (this.neighbours.countMines() == 0)
 		{
-			for (double i = 0; i < 4; i++)
+			for (MinesweeperTile tile : neighbours().tiles().list())
 			{
-				int x = (int) Math.round(this.x + Math.sin(Math.PI / 2 * i));
-				int y = (int) Math.round(this.y + Math.cos(Math.PI / 2 * i));
-				// System.out.println(this.x + ", " + this.y + " to " + x + "," + y);
-				if (getMinesweeper().isInside(x, y))
-				{
-					getMinesweeper().get(x, y).autoOpen();
-				}
+				tile.autoOpen();
 			}
 		}
 	}
