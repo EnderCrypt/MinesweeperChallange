@@ -46,7 +46,7 @@ Installation (Maven)
   <dependency>
     <groupId>com.github.EnderCrypt</groupId>
     <artifactId>MinesweeperChallange</artifactId>
-    <version>6b02584e65ca0807deb3169d92e78bb36140dba5</version>
+    <version>master-SNAPSHOT</version>
   </dependency>
 
 </dependencies>
