@@ -119,7 +119,14 @@ public class MinesweeperTile extends MinesweeperChild
 			sb.append(" ");
 			if (this.mine)
 			{
-				sb.append('X');
+				if (getMark() == MinesweeperMark.MINE)
+				{
+					return "[" + this.mark.getAscii() + "]";
+				}
+				else
+				{
+					sb.append('X');
+				}
 			}
 			else
 			{
