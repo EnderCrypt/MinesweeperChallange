@@ -97,6 +97,13 @@ public class Minesweeper
 
 	protected void onModify()
 	{
+		// check win
+		if (getInformation().checkWin())
+		{
+			getInformation().state = MinesweeperGameState.WON;
+		}
+
+		// auto print
 		if (this.autoprint)
 		{
 			print();

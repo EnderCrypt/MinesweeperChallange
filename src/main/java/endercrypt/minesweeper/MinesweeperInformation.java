@@ -41,6 +41,22 @@ public class MinesweeperInformation extends MinesweeperChild
 		return mines;
 	}
 
+	protected boolean checkWin()
+	{
+		for (int y = 0; y < getHeight(); y++)
+		{
+			for (int x = 0; x < getWidth(); x++)
+			{
+				MinesweeperTile tile = getMinesweeper().get(x, y);
+				if (tile.isOpen() == false && tile.isMine() == false)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public int countMines()
 	{
 		return internalCounter((tile) -> tile.isMine());
