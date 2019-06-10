@@ -15,7 +15,7 @@ public class Minesweeper
 		this.information = new MinesweeperInformation(this, width, height);
 
 		// bomb board
-		boolean[][] bombBoard = new boolean[height][width];
+		boolean[][] bombBoard = new boolean[width][height];
 		int placedBombs = 0;
 		while (placedBombs < bombs)
 		{
@@ -29,7 +29,7 @@ public class Minesweeper
 		}
 
 		// real board
-		this.board = new MinesweeperTile[height][width];
+		this.board = new MinesweeperTile[width][height];
 		for (int y = 0; y < this.information.getHeight(); y++)
 		{
 			for (int x = 0; x < this.information.getWidth(); x++)
