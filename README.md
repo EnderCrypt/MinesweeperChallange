@@ -26,3 +26,28 @@ for (int y = 0; y < minesweeper.getInformation().getHeight(); y++)
 Console output:
 
 ![Console output](https://image.prntscr.com/image/7_KCqz_ORaubrUrvZOhrzA.png)
+
+Installation (Maven)
+
+```maven
+<repositories>
+  
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+
+</repositories>
+
+
+
+<dependencies>
+
+  <dependency>
+    <groupId>com.github.EnderCrypt</groupId>
+    <artifactId>MinesweeperChallange</artifactId>
+    <version>6b02584e65ca0807deb3169d92e78bb36140dba5</version>
+  </dependency>
+
+</dependencies>
+```
