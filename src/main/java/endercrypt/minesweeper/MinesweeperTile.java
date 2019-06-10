@@ -48,12 +48,41 @@ public class MinesweeperTile extends MinesweeperChild
 			return;
 		}
 		getMinesweeper().getInformation().validateAlive();
-		this.open = true;
 		if (this.mine)
 		{
 			getMinesweeper().getInformation().state = MinesweeperGameState.DEAD;
 		}
+		else
+		{
+			autoOpen();
+		}
 		getMinesweeper().onModify();
+	}
+
+	protected void autoOpen()
+	{
+		if (this.mine)
+		{
+			return;
+		}
+		if (this.open)
+		{
+			return;
+		}
+		this.open = true;
+		if (this.neighbours.countMines() == 0)
+		{
+			for (double i = 0; i < 4; i++)
+			{
+				int x = (int) Math.round(this.x + Math.sin(Math.PI / 2 * i));
+				int y = (int) Math.round(this.y + Math.cos(Math.PI / 2 * i));
+				// System.out.println(this.x + ", " + this.y + " to " + x + "," + y);
+				if (getMinesweeper().isInside(x, y))
+				{
+					getMinesweeper().get(x, y).autoOpen();
+				}
+			}
+		}
 	}
 
 	protected boolean isMine()
