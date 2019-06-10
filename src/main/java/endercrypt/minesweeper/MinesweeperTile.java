@@ -113,7 +113,7 @@ public class MinesweeperTile extends MinesweeperChild
 
 	public String getAscii()
 	{
-		if (this.open && (getMinesweeper().getInformation().getGameState() == MinesweeperGameState.DEAD))
+		if (this.open || (getMinesweeper().getInformation().getGameState() == MinesweeperGameState.DEAD))
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.append(" ");
