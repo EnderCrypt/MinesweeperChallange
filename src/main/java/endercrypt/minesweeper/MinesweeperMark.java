@@ -4,7 +4,7 @@ public enum MinesweeperMark
 {
 	UNMARKED(' '),
 	QUESTION('?'),
-	BOMB('!');
+	MINE('!');
 
 	private char ascii;
 
