@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -20,8 +21,14 @@ public class MinesweeperGraphics
 
 	public static synchronized void loadTileset(InputStream inputStream, int tileWidth, int tileHeight) throws IOException
 	{
+		Objects.requireNonNull(inputStream);
+
 		// load image
 		BufferedImage image = ImageIO.read(inputStream);
+		if (image == null)
+		{
+			throw new IllegalArgumentException("inputStream does not contain image");
+		}
 
 		// verify size
 		if (image.getWidth() % tileWidth != 0 || image.getHeight() % tileHeight != 0)
@@ -56,9 +63,12 @@ public class MinesweeperGraphics
 	{
 		if (loaded == false)
 		{
-			try (InputStream input = new BufferedInputStream(MinesweeperGraphics.class.getResourceAsStream("/minesweeper_tileset.png")))
+			try
 			{
-				loadTileset(input, 32, 32);
+				try (InputStream input = new BufferedInputStream(MinesweeperGraphics.class.getResourceAsStream("/tileset.png")))
+				{
+					loadTileset(input, 32, 32);
+				}
 			}
 			catch (IOException e)
 			{

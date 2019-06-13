@@ -18,10 +18,6 @@ public class Minesweeper
 	{
 		this.information = new MinesweeperInformation(this, width, height);
 
-		// recorder
-		this.recorder = record ? new MinesweeperRecorder(this) : null;
-		this.recordFrame();
-
 		// bomb board
 		boolean[][] bombBoard = new boolean[width][height];
 		int placedBombs = 0;
@@ -54,6 +50,10 @@ public class Minesweeper
 				this.board[x][y].initializeTile();
 			}
 		}
+
+		// recorder
+		this.recorder = record ? new MinesweeperRecorder(this) : null;
+		this.recordFrame();
 	}
 
 	public int getWidth()

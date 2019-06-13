@@ -5,17 +5,26 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import endercrypt.minesweeper.MinesweeperTile;
 import endercrypt.minesweeper.graphics.MinesweeperGraphics;
+import endercrypt.minesweeper.graphics.MinesweeperGraphicsPointer;
 
 public class MinesweeperRecordingFrame
 {
 	private int width;
 	private int height;
-	private MinesweeperTile[][] board;
+	private MinesweeperGraphicsPointer[][] board;
 
 	public MinesweeperRecordingFrame(int width, int height, MinesweeperTile[][] board)
 	{
 		this.width = width;
 		this.height = height;
+		this.board = new MinesweeperGraphicsPointer[width][height];
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				this.board[x][y] = board[x][y].generateGraphicsPointer();
+			}
+		}
 	}
 
 	public int getWidth()
@@ -43,8 +52,8 @@ public class MinesweeperRecordingFrame
 			{
 				int px = x * tileWidth;
 				int py = y * tileHeigt;
-				MinesweeperTile tile = this.board[x][y];
-				Image tileImage = tile.generateImage();
+				MinesweeperGraphicsPointer graphicsPointer = this.board[x][y];
+				Image tileImage = graphicsPointer.getImage();
 				g2d.drawImage(tileImage, px, py, null);
 			}
 		}
