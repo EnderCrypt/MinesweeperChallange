@@ -1,4 +1,4 @@
-package endercrypt.minesweeper.recorder;
+package endercrypt.minesweeper.graphics;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class MinesweeperRecorderGraphics
+public class MinesweeperGraphics
 {
 	private static boolean loaded = false;
 
@@ -30,8 +30,8 @@ public class MinesweeperRecorderGraphics
 		}
 
 		// variables
-		MinesweeperRecorderGraphics.tileWidth = tileWidth;
-		MinesweeperRecorderGraphics.tileHeight = tileHeight;
+		MinesweeperGraphics.tileWidth = tileWidth;
+		MinesweeperGraphics.tileHeight = tileHeight;
 		int width = image.getWidth() / tileWidth;
 		int height = image.getHeight() / tileHeight;
 
@@ -56,7 +56,7 @@ public class MinesweeperRecorderGraphics
 	{
 		if (loaded == false)
 		{
-			try (InputStream input = new BufferedInputStream(MinesweeperRecorderGraphics.class.getResourceAsStream("/minesweeper_tileset.png")))
+			try (InputStream input = new BufferedInputStream(MinesweeperGraphics.class.getResourceAsStream("/minesweeper_tileset.png")))
 			{
 				loadTileset(input, 32, 32);
 			}
@@ -65,6 +65,16 @@ public class MinesweeperRecorderGraphics
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static int getTileWidth()
+	{
+		return tileWidth;
+	}
+
+	public static int getTileHeight()
+	{
+		return tileHeight;
 	}
 
 	public static Image get(int index)

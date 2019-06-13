@@ -1,6 +1,10 @@
 package endercrypt.minesweeper;
 
+import java.awt.Image;
 import java.util.Objects;
+
+import endercrypt.minesweeper.graphics.MinesweeperGraphicsIndex;
+import endercrypt.minesweeper.graphics.MinesweeperGraphicsPointer;
 
 public class MinesweeperTile extends MinesweeperChild
 {
@@ -111,21 +115,20 @@ public class MinesweeperTile extends MinesweeperChild
 		return ((this.x == 0) || (this.y == 0) || (this.x == getMinesweeper().getWidth()) || (this.y == getMinesweeper().getHeight()));
 	}
 
-	public String getAscii()
+	public MinesweeperGraphicsPointer generateGraphicsPointer()
 	{
 		if (this.open || (getMinesweeper().getInformation().getGameState() == MinesweeperGameState.DEAD))
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.append(" ");
+
 			if (this.mine)
 			{
 				if (getMark() == MinesweeperMark.MINE)
 				{
-					return "[" + this.mark.getAscii() + "]";
+					return getMark().getGraphicsPointer();
 				}
 				else
 				{
-					sb.append('X');
+					return MinesweeperGraphicsIndex.MINE;
 				}
 			}
 			else
@@ -133,20 +136,28 @@ public class MinesweeperTile extends MinesweeperChild
 				int neighbours = neighbours().countMines();
 				if (neighbours == 0)
 				{
-					sb.append(' ');
+					return MinesweeperGraphicsIndex.EMPTY;
 				}
 				else
 				{
-					sb.append((char) ('0' + neighbours));
+					return MinesweeperGraphicsIndex.NUMBERS.getIndex(neighbours);
 				}
 			}
-			sb.append(" ");
-			return sb.toString();
 		}
 		else
 		{
-			return "[" + this.mark.getAscii() + "]";
+			return getMark().getGraphicsPointer();
 		}
+	}
+
+	public Image generateImage()
+	{
+		return generateGraphicsPointer().getImage();
+	}
+
+	public String getAscii()
+	{
+		return generateGraphicsPointer().getAscii();
 	}
 
 	@Override

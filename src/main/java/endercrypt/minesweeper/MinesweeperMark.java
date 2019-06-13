@@ -1,20 +1,23 @@
 package endercrypt.minesweeper;
 
+import endercrypt.minesweeper.graphics.MinesweeperGraphicsIndex;
+import endercrypt.minesweeper.graphics.MinesweeperGraphicsPointer;
+
 public enum MinesweeperMark
 {
-	UNMARKED(' '),
-	QUESTION('?'),
-	MINE('!');
+	UNMARKED(MinesweeperGraphicsIndex.UNOPENED),
+	QUESTION(MinesweeperGraphicsIndex.QUESTION),
+	MINE(MinesweeperGraphicsIndex.EXCLAMATION);
 
-	private char ascii;
+	private MinesweeperGraphicsPointer graphicsPointer;
 
-	private MinesweeperMark(char ascii)
+	private MinesweeperMark(MinesweeperGraphicsPointer graphicsPointer)
 	{
-		this.ascii = ascii;
+		this.graphicsPointer = graphicsPointer;
 	}
 
-	public char getAscii()
+	public MinesweeperGraphicsPointer getGraphicsPointer()
 	{
-		return this.ascii;
+		return this.graphicsPointer;
 	}
 }

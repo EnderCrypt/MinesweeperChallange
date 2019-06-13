@@ -1,12 +1,25 @@
 package endercrypt.minesweeper.recorder;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import com.squareup.gifencoder.GifEncoder;
+import com.squareup.gifencoder.ImageOptions;
 
 import endercrypt.minesweeper.Minesweeper;
 import endercrypt.minesweeper.MinesweeperChild;
+import endercrypt.minesweeper.graphics.MinesweeperGraphics;
 
 public class MinesweeperRecorder extends MinesweeperChild
 {
@@ -49,8 +62,28 @@ public class MinesweeperRecorder extends MinesweeperChild
 		this.frames.add(frame);
 	}
 
-	public void saveGif(Path path)
+	public void saveGif(Path path) throws FileNotFoundException, IOException
 	{
+		int tileWidth = MinesweeperGraphics.getTileWidth();
+		int tileHeigt = MinesweeperGraphics.getTileHeight();
+		int screenWidth = this.width * tileWidth;
+		int screenHeight = this.height * tileHeigt;
 
+		try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile())))
+		{
+			GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
+			Iterator<MinesweeperRecordingFrame> iterator = this.frames.iterator();
+			while (iterator.hasNext())
+			{
+				MinesweeperRecordingFrame frame = iterator.next();
+				BufferedImage image = frame.generateImage();
+				int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+				ImageOptions options = new ImageOptions();
+				options.setDelay(iterator.hasNext() ? 1000 : 100, TimeUnit.MILLISECONDS);
+
+				gifEncoder.addImage(rgbData, screenWidth, options);
+			}
+			gifEncoder.finishEncoding();
+		}
 	}
 }
