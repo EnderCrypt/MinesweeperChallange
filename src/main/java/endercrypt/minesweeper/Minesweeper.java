@@ -3,6 +3,7 @@ package endercrypt.minesweeper;
 import java.util.Random;
 
 import endercrypt.minesweeper.recorder.MinesweeperRecorder;
+import endercrypt.minesweeper.recorder.RecordingFrame;
 
 public class Minesweeper
 {
@@ -119,7 +120,7 @@ public class Minesweeper
 		// record
 		if (this.recorder.isRecording())
 		{
-			this.recorder.saveFrame(this.board);
+			this.recorder.saveFrame(new RecordingFrame(getWidth(), getHeight(), this.board));
 		}
 
 		// auto print
