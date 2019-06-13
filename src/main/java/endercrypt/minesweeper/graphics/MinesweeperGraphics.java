@@ -69,11 +69,13 @@ public class MinesweeperGraphics
 
 	public static int getTileWidth()
 	{
+		verifyTileset();
 		return tileWidth;
 	}
 
 	public static int getTileHeight()
 	{
+		verifyTileset();
 		return tileHeight;
 	}
 
