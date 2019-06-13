@@ -79,7 +79,7 @@ public class MinesweeperRecorder extends MinesweeperChild
 				BufferedImage image = frame.generateImage();
 				int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 				ImageOptions options = new ImageOptions();
-				options.setDelay(iterator.hasNext() ? 1000 : 100, TimeUnit.MILLISECONDS);
+				options.setDelay(iterator.hasNext() ? 100 : 1000, TimeUnit.MILLISECONDS);
 
 				gifEncoder.addImage(rgbData, screenWidth, options);
 			}
