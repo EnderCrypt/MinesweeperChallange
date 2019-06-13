@@ -2,18 +2,24 @@ package endercrypt.minesweeper;
 
 import java.util.Random;
 
+import endercrypt.minesweeper.recorder.MinesweeperRecorder;
+
 public class Minesweeper
 {
 	private MinesweeperTile[][] board;
 
-	private boolean record = false;
 	private boolean autoprint = false;
 
 	private MinesweeperInformation information;
+	private MinesweeperRecorder recorder;
 
 	public Minesweeper(Random random, int width, int height, int bombs)
 	{
 		this.information = new MinesweeperInformation(this, width, height);
+
+		// recorder
+		this.recorder = new MinesweeperRecorder(this);
+		this.recorder.setRecording(false);
 
 		// bomb board
 		boolean[][] bombBoard = new boolean[width][height];
@@ -92,14 +98,9 @@ public class Minesweeper
 		return sb.toString();
 	}
 
-	public void setRecord(boolean record)
+	public MinesweeperRecorder getRecorder()
 	{
-		this.record = record;
-	}
-
-	public boolean isRecord()
-	{
-		return this.record;
+		return this.recorder;
 	}
 
 	public void setAutoprint(boolean autoprint)
@@ -113,6 +114,12 @@ public class Minesweeper
 		if (getInformation().checkWin())
 		{
 			getInformation().state = MinesweeperGameState.WON;
+		}
+
+		// record
+		if (this.recorder.isRecording())
+		{
+			this.recorder.saveFrame(this.board);
 		}
 
 		// auto print
