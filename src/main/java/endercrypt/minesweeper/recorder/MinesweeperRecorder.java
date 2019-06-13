@@ -87,7 +87,7 @@ public class MinesweeperRecorder extends MinesweeperChild
 			this.frames.stream().map(frame -> executor.submit(() -> frame.generateImage())).forEach(imageFutures::add);
 
 			// save images
-			try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile()), 1024 * 64))
+			try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile()), 1024 * 16))
 			{
 				GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
 
