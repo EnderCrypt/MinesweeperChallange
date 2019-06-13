@@ -1,5 +1,6 @@
 package endercrypt.minesweeper;
 
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import endercrypt.minesweeper.recorder.MinesweeperRecorder;
@@ -105,6 +106,10 @@ public class Minesweeper
 
 	public MinesweeperRecorder getRecorder()
 	{
+		if (this.recorder == null)
+		{
+			throw new NoSuchElementException("The recorder is not present as was set in " + MinesweeperBuilder.class.getSimpleName());
+		}
 		return this.recorder;
 	}
 
