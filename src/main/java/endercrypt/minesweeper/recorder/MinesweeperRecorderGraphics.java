@@ -1,0 +1,75 @@
+package endercrypt.minesweeper.recorder;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+
+public class MinesweeperRecorderGraphics
+{
+	private static boolean loaded = false;
+
+	private static int tileWidth;
+	private static int tileHeight;
+	private static List<BufferedImage> tiles = new ArrayList<>();
+
+	public static synchronized void loadTileset(InputStream inputStream, int tileWidth, int tileHeight) throws IOException
+	{
+		// load image
+		BufferedImage image = ImageIO.read(inputStream);
+
+		// verify size
+		if (image.getWidth() % tileWidth != 0 || image.getHeight() % tileHeight != 0)
+		{
+			throw new IllegalArgumentException("image does not match tile dimensions " + image.getWidth() + ", " + image.getHeight() + " for tiles of size " + tileWidth + ", " + tileHeight);
+		}
+
+		// variables
+		MinesweeperRecorderGraphics.tileWidth = tileWidth;
+		MinesweeperRecorderGraphics.tileHeight = tileHeight;
+		int width = image.getWidth() / tileWidth;
+		int height = image.getHeight() / tileHeight;
+
+		// cut & save
+		tiles.clear();
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				int px = x * tileWidth;
+				int py = y * tileHeight;
+				BufferedImage subImage = image.getSubimage(px, py, tileWidth, tileHeight);
+				tiles.add(subImage);
+			}
+		}
+
+		// finalize
+		loaded = true;
+	}
+
+	private static void verifyTileset()
+	{
+		if (loaded == false)
+		{
+			try (InputStream input = new BufferedInputStream(MinesweeperRecorderGraphics.class.getResourceAsStream("/minesweeper_tileset.png")))
+			{
+				loadTileset(input, 32, 32);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static Image get(int index)
+	{
+		verifyTileset();
+		return tiles.get(index);
+	}
+}
