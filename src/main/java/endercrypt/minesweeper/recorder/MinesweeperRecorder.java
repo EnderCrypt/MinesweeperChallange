@@ -3,7 +3,6 @@ package endercrypt.minesweeper.recorder;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,6 +11,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.squareup.gifencoder.GifEncoder;
@@ -23,6 +27,8 @@ import endercrypt.minesweeper.graphics.MinesweeperGraphics;
 
 public class MinesweeperRecorder extends MinesweeperChild
 {
+	private static final ExecutorService executor = Executors.newFixedThreadPool(5);
+
 	private int width = -1;
 	private int height = -1;
 
@@ -62,28 +68,52 @@ public class MinesweeperRecorder extends MinesweeperChild
 		this.frames.add(frame);
 	}
 
-	public void saveGif(Path path) throws FileNotFoundException, IOException
+	public void saveGif(Path path) throws MinesweeperRecorderException
 	{
+		saveGif(path, executor);
+	}
+
+	public void saveGif(Path path, ExecutorService executor) throws MinesweeperRecorderException
+	{
+		// dimensions
 		int tileWidth = MinesweeperGraphics.getTileWidth();
 		int tileHeigt = MinesweeperGraphics.getTileHeight();
 		int screenWidth = this.width * tileWidth;
 		int screenHeight = this.height * tileHeigt;
 
-		try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile())))
+		try
 		{
-			GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
-			Iterator<MinesweeperRecordingFrame> iterator = this.frames.iterator();
-			while (iterator.hasNext())
-			{
-				MinesweeperRecordingFrame frame = iterator.next();
-				BufferedImage image = frame.generateImage();
-				int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-				ImageOptions options = new ImageOptions();
-				options.setDelay(iterator.hasNext() ? 100 : 1000, TimeUnit.MILLISECONDS);
+			// generate images
+			List<Callable<BufferedImage>> imageGenerators = new ArrayList<>();
+			this.frames.stream().map(frame -> (Callable<BufferedImage>) () -> frame.generateImage()).forEach(imageGenerators::add);
+			List<Future<BufferedImage>> imageGeneratorFutures = executor.invokeAll(imageGenerators);
 
-				gifEncoder.addImage(rgbData, screenWidth, options);
+			// save images
+			try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile())))
+			{
+				GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
+
+				Iterator<Future<BufferedImage>> iterator = imageGeneratorFutures.iterator();
+				while (iterator.hasNext())
+				{
+					// image
+					Future<BufferedImage> imageFuture = iterator.next();
+					BufferedImage image = imageFuture.get();
+					int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+
+					// options
+					ImageOptions options = new ImageOptions();
+					options.setDelay(iterator.hasNext() ? 100 : 1000, TimeUnit.MILLISECONDS);
+
+					// save imag
+					gifEncoder.addImage(rgbData, screenWidth, options);
+				}
+				gifEncoder.finishEncoding();
 			}
-			gifEncoder.finishEncoding();
+		}
+		catch (ExecutionException | IOException | InterruptedException e)
+		{
+			throw new MinesweeperRecorderException(e);
 		}
 	}
 }
