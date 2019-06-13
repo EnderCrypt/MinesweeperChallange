@@ -96,6 +96,11 @@ public class Minesweeper
 		this.autoprint = autoprint;
 	}
 
+	public boolean isAutoprint()
+	{
+		return this.autoprint;
+	}
+
 	protected void onModify()
 	{
 		// check win
