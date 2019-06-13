@@ -4,6 +4,11 @@ public class MinesweeperChild
 {
 	private Minesweeper minesweeper;
 
+	public MinesweeperChild(MinesweeperChild minesweeperChild)
+	{
+		this(minesweeperChild.getMinesweeper());
+	}
+
 	public MinesweeperChild(Minesweeper minesweeper)
 	{
 		this.minesweeper = minesweeper;
