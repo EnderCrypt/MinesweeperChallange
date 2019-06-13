@@ -13,11 +13,21 @@
 
 
 	<dependencies>
+
+		<!-- Jool -->
 		<dependency>
 			<groupId>org.jooq</groupId>
 			<artifactId>jool-java-8</artifactId>
 			<version>0.9.13</version>
 		</dependency>
+
+		<!-- gif encoder -->
+		<dependency>
+			<groupId>com.squareup</groupId>
+			<artifactId>gifencoder</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
