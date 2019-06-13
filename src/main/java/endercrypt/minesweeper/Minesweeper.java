@@ -12,6 +12,7 @@ public class Minesweeper
 
 	public Minesweeper(Random random, int width, int height, int bombs)
 	{
+		// information
 		this.information = new MinesweeperInformation(this, width, height);
 
 		// bomb board
