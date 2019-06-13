@@ -3,24 +3,23 @@ package endercrypt.minesweeper;
 import java.util.Random;
 
 import endercrypt.minesweeper.recorder.MinesweeperRecorder;
-import endercrypt.minesweeper.recorder.RecordingFrame;
+import endercrypt.minesweeper.recorder.MinesweeperRecordingFrame;
 
 public class Minesweeper
 {
 	private MinesweeperTile[][] board;
 
 	private boolean autoprint = false;
-
 	private MinesweeperInformation information;
 	private MinesweeperRecorder recorder;
 
-	public Minesweeper(Random random, int width, int height, int bombs)
+	public Minesweeper(Random random, int width, int height, int bombs, boolean record)
 	{
 		this.information = new MinesweeperInformation(this, width, height);
 
 		// recorder
-		this.recorder = new MinesweeperRecorder(this);
-		this.recorder.setRecording(false);
+		this.recorder = record ? new MinesweeperRecorder(this) : null;
+		this.recordFrame();
 
 		// bomb board
 		boolean[][] bombBoard = new boolean[width][height];
@@ -99,14 +98,22 @@ public class Minesweeper
 		return sb.toString();
 	}
 
+	public void setAutoprint(boolean autoprint)
+	{
+		this.autoprint = autoprint;
+	}
+
 	public MinesweeperRecorder getRecorder()
 	{
 		return this.recorder;
 	}
 
-	public void setAutoprint(boolean autoprint)
+	private void recordFrame()
 	{
-		this.autoprint = autoprint;
+		if (this.recorder != null)
+		{
+			this.recorder.saveFrame(new MinesweeperRecordingFrame(getWidth(), getHeight(), this.board));
+		}
 	}
 
 	protected void onModify()
@@ -118,10 +125,7 @@ public class Minesweeper
 		}
 
 		// record
-		if (this.recorder.isRecording())
-		{
-			this.recorder.saveFrame(new RecordingFrame(getWidth(), getHeight(), this.board));
-		}
+		recordFrame();
 
 		// auto print
 		if (this.autoprint)

@@ -14,7 +14,7 @@ public class MinesweeperRecorder extends MinesweeperChild
 	private int height = -1;
 
 	private boolean recording = false;
-	private List<RecordingFrame> frames = new ArrayList<>();
+	private List<MinesweeperRecordingFrame> frames = new ArrayList<>();
 
 	public MinesweeperRecorder(Minesweeper minesweeper)
 	{
@@ -31,7 +31,7 @@ public class MinesweeperRecorder extends MinesweeperChild
 		return this.recording;
 	}
 
-	public void saveFrame(RecordingFrame frame)
+	public void saveFrame(MinesweeperRecordingFrame frame)
 	{
 		Objects.requireNonNull(frame);
 		if (this.frames.size() == 0)

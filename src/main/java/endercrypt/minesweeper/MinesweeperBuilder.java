@@ -15,6 +15,7 @@ public class MinesweeperBuilder
 	private final RangeControllerInteger height = new RangeControllerInteger("height", 0, Integer.MAX_VALUE);
 	private final RangeControllerInteger bombs = new RangeControllerInteger("bombs", 0, Integer.MAX_VALUE);
 	private final RangeControllerDouble bombsPercent = new RangeControllerDouble("bombsPercent", 0.0, 1.0);
+	private boolean record = false;
 
 	public MinesweeperBuilder()
 	{
@@ -61,6 +62,11 @@ public class MinesweeperBuilder
 		public RangeValue<Double> percent();
 	}
 
+	public void setRecord(boolean record)
+	{
+		this.record = record;
+	}
+
 	public Minesweeper build()
 	{
 		long seed = this.seed.generate(new Random());
@@ -83,6 +89,6 @@ public class MinesweeperBuilder
 			bombs = (int) Math.floor((width * height) * percent);
 		}
 
-		return new Minesweeper(random, width, height, bombs);
+		return new Minesweeper(random, width, height, bombs, this.record);
 	}
 }

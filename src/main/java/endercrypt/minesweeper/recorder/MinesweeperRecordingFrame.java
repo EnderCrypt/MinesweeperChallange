@@ -2,13 +2,13 @@ package endercrypt.minesweeper.recorder;
 
 import endercrypt.minesweeper.MinesweeperTile;
 
-public class RecordingFrame
+public class MinesweeperRecordingFrame
 {
 	private int width;
 	private int height;
 	MinesweeperTile[][] board;
 
-	public RecordingFrame(int width, int height, MinesweeperTile[][] board)
+	public MinesweeperRecordingFrame(int width, int height, MinesweeperTile[][] board)
 	{
 		this.width = width;
 		this.height = height;
