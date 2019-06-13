@@ -117,43 +117,25 @@ public class MinesweeperTile extends MinesweeperChild
 
 	public MinesweeperGraphicsPointer generateGraphicsPointer()
 	{
-		if (this.open || (getMinesweeper().getInformation().getGameState() == MinesweeperGameState.DEAD))
+		if ((getMinesweeper().getInformation().getGameState() == MinesweeperGameState.DEAD) && this.mine)
 		{
-
-			if (this.mine)
+			return MinesweeperGraphicsIndex.MINE;
+		}
+		if (this.open)
+		{
+			int neighbours = neighbours().countMines();
+			if (neighbours == 0)
 			{
-				if (getMark() == MinesweeperMark.MINE)
-				{
-					return getMark().getGraphicsPointer();
-				}
-				else
-				{
-					return MinesweeperGraphicsIndex.MINE;
-				}
+				return MinesweeperGraphicsIndex.EMPTY;
 			}
 			else
 			{
-				int neighbours = neighbours().countMines();
-				if (neighbours == 0)
-				{
-					return MinesweeperGraphicsIndex.EMPTY;
-				}
-				else
-				{
-					return MinesweeperGraphicsIndex.NUMBERS.getIndex(neighbours);
-				}
+				return MinesweeperGraphicsIndex.NUMBERS.getIndex(neighbours);
 			}
 		}
 		else
 		{
-			if (getMark() == MinesweeperMark.UNMARKED)
-			{
-				return MinesweeperGraphicsIndex.NUMBERS.getIndex(neighbours().countMines());
-			}
-			else
-			{
-				return getMark().getGraphicsPointer();
-			}
+			return getMark().getGraphicsPointer();
 		}
 	}
 
