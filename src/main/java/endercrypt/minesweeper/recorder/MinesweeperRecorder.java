@@ -1,7 +1,7 @@
 package endercrypt.minesweeper.recorder;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,12 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
-import com.squareup.gifencoder.DisposalMethod;
-import com.squareup.gifencoder.GifEncoder;
-import com.squareup.gifencoder.ImageOptions;
-
+import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import endercrypt.minesweeper.Minesweeper;
 import endercrypt.minesweeper.MinesweeperChild;
 import endercrypt.minesweeper.graphics.MinesweeperGraphics;
@@ -90,38 +85,33 @@ public class MinesweeperRecorder extends MinesweeperChild
 			// save images
 			try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile()), 1024 * 16))
 			{
-				GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
-				ImageOptions options = new ImageOptions();
-				options.setDelay(100, TimeUnit.MILLISECONDS);
-				options.setDisposalMethod(DisposalMethod.RESTORE_TO_BACKGROUND);
+				AnimatedGifEncoder gifEncoder = new AnimatedGifEncoder();
+				gifEncoder.start(output);
+				gifEncoder.setDelay(100);
+				gifEncoder.setBackground(Color.BLACK);
 
-				int frame = 0;
+				int frame = -1;
 				Iterator<Future<BufferedImage>> iterator = imageFutures.iterator();
 				while (iterator.hasNext())
 				{
+					// frame
 					frame++;
 
 					// image
 					BufferedImage image = iterator.next().get();
-					// ImageIO.write(image, "PNG", new File("temp.png"));
-					// System.exit(0);
-					int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-					// options
-					/*
-					ImageOptions options = new ImageOptions();
-					int speed = 1;
-					if (frame > 1)
+					// frame
+					int repeats = Math.max(1, 10 - frame);
+					if (iterator.hasNext() == false)
 					{
-						speed = (int) Math.max(1000.0 / frame, 100);
+						repeats = 10;
 					}
-					options.setDelay(iterator.hasNext() ? speed : 1000, TimeUnit.MILLISECONDS);
-					*/
-
-					// save image
-					gifEncoder.addImage(rgbData, screenWidth, options);
+					for (int i = 0; i < repeats; i++)
+					{
+						gifEncoder.addFrame(image);
+					}
 				}
-				gifEncoder.finishEncoding();
+				gifEncoder.finish();
 			}
 		}
 		catch (ExecutionException | IOException | InterruptedException e)

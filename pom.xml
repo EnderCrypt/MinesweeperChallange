@@ -11,21 +11,6 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
-	<repositories>
-
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-
-		<repository>
-			<id>jcenter</id>
-			<name>jcenter-bintray</name>
-			<url>http://jcenter.bintray.com</url>
-		</repository>
-
-	</repositories>
-
 	<dependencies>
 
 		<!-- Jool -->
@@ -36,9 +21,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.square</groupId>
-			<artifactId>gifencoder</artifactId>
-			<version>661a0d5127c07b079cd87ee88cd8a9cef11ffee5</version>
+			<groupId>com.madgag</groupId>
+			<artifactId>animated-gif-lib</artifactId>
+			<version>1.4</version>
 		</dependency>
 
 		<!-- gif encoder -->
