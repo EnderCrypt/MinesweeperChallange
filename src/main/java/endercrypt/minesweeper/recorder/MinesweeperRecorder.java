@@ -91,16 +91,20 @@ public class MinesweeperRecorder extends MinesweeperChild
 			{
 				GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
 
+				int frame = 0;
 				Iterator<Future<BufferedImage>> iterator = imageFutures.iterator();
 				while (iterator.hasNext())
 				{
+					frame++;
+
 					// image
 					BufferedImage image = iterator.next().get();
 					int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
 					// options
 					ImageOptions options = new ImageOptions();
-					options.setDelay(iterator.hasNext() ? 100 : 1000, TimeUnit.MILLISECONDS);
+					int speed = (int) Math.max(1000.0 / frame, 100);
+					options.setDelay(iterator.hasNext() ? speed : 1000, TimeUnit.MILLISECONDS);
 
 					// save image
 					gifEncoder.addImage(rgbData, screenWidth, options);
