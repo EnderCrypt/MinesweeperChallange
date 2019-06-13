@@ -27,7 +27,7 @@ import endercrypt.minesweeper.graphics.MinesweeperGraphics;
 
 public class MinesweeperRecorder extends MinesweeperChild
 {
-	private static final ExecutorService executor = Executors.newFixedThreadPool(5);
+	private static final ExecutorService executor = Executors.newFixedThreadPool(4);
 
 	private int width = -1;
 	private int height = -1;
