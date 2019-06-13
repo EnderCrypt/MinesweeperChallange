@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -84,28 +83,26 @@ public class MinesweeperRecorder extends MinesweeperChild
 		try
 		{
 			// generate images
-			List<Callable<BufferedImage>> imageGenerators = new ArrayList<>();
-			this.frames.stream().map(frame -> (Callable<BufferedImage>) () -> frame.generateImage()).forEach(imageGenerators::add);
-			List<Future<BufferedImage>> imageGeneratorFutures = executor.invokeAll(imageGenerators);
+			List<Future<BufferedImage>> imageFutures = new ArrayList<>();
+			this.frames.stream().map(frame -> executor.submit(() -> frame.generateImage())).forEach(imageFutures::add);
 
 			// save images
-			try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile())))
+			try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile()), 1024 * 1024 * 4))
 			{
 				GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
 
-				Iterator<Future<BufferedImage>> iterator = imageGeneratorFutures.iterator();
+				Iterator<Future<BufferedImage>> iterator = imageFutures.iterator();
 				while (iterator.hasNext())
 				{
 					// image
-					Future<BufferedImage> imageFuture = iterator.next();
-					BufferedImage image = imageFuture.get();
+					BufferedImage image = iterator.next().get();
 					int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
 					// options
 					ImageOptions options = new ImageOptions();
 					options.setDelay(iterator.hasNext() ? 100 : 1000, TimeUnit.MILLISECONDS);
 
-					// save imag
+					// save image
 					gifEncoder.addImage(rgbData, screenWidth, options);
 				}
 				gifEncoder.finishEncoding();
