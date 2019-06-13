@@ -124,14 +124,7 @@ public class MinesweeperTile extends MinesweeperChild
 		if (this.open)
 		{
 			int neighbours = neighbours().countMines();
-			if (neighbours == 0)
-			{
-				return MinesweeperGraphicsIndex.EMPTY;
-			}
-			else
-			{
-				return MinesweeperGraphicsIndex.NUMBERS.getIndex(neighbours);
-			}
+			return MinesweeperGraphicsIndex.NUMBERS.getIndex(neighbours);
 		}
 		else
 		{

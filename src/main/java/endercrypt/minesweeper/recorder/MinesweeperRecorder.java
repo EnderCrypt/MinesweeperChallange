@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.squareup.gifencoder.DisposalMethod;
 import com.squareup.gifencoder.GifEncoder;
 import com.squareup.gifencoder.ImageOptions;
 
@@ -90,6 +91,9 @@ public class MinesweeperRecorder extends MinesweeperChild
 			try (OutputStream output = new BufferedOutputStream(new FileOutputStream(path.toFile()), 1024 * 16))
 			{
 				GifEncoder gifEncoder = new GifEncoder(output, screenWidth, screenHeight, 0);
+				ImageOptions options = new ImageOptions();
+				options.setDelay(100, TimeUnit.MILLISECONDS);
+				options.setDisposalMethod(DisposalMethod.RESTORE_TO_BACKGROUND);
 
 				int frame = 0;
 				Iterator<Future<BufferedImage>> iterator = imageFutures.iterator();
@@ -99,12 +103,20 @@ public class MinesweeperRecorder extends MinesweeperChild
 
 					// image
 					BufferedImage image = iterator.next().get();
+					// ImageIO.write(image, "PNG", new File("temp.png"));
+					// System.exit(0);
 					int[] rgbData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
 					// options
+					/*
 					ImageOptions options = new ImageOptions();
-					int speed = (int) Math.max(1000.0 / frame, 100);
+					int speed = 1;
+					if (frame > 1)
+					{
+						speed = (int) Math.max(1000.0 / frame, 100);
+					}
 					options.setDelay(iterator.hasNext() ? speed : 1000, TimeUnit.MILLISECONDS);
+					*/
 
 					// save image
 					gifEncoder.addImage(rgbData, screenWidth, options);

@@ -11,6 +11,20 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
+	<repositories>
+
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+
+		<repository>
+			<id>jcenter</id>
+			<name>jcenter-bintray</name>
+			<url>http://jcenter.bintray.com</url>
+		</repository>
+
+	</repositories>
 
 	<dependencies>
 
@@ -21,12 +35,15 @@
 			<version>0.9.13</version>
 		</dependency>
 
-		<!-- gif encoder -->
 		<dependency>
-			<groupId>com.squareup</groupId>
+			<groupId>com.github.square</groupId>
 			<artifactId>gifencoder</artifactId>
-			<version>0.9.1</version>
+			<version>661a0d5127c07b079cd87ee88cd8a9cef11ffee5</version>
 		</dependency>
+
+		<!-- gif encoder -->
+		<!-- <dependency> <groupId>com.squareup</groupId> <artifactId>gifencoder</artifactId> 
+			<version>0.9.1</version> </dependency> -->
 
 	</dependencies>
 
