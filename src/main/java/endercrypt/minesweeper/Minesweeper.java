@@ -4,10 +4,11 @@ import java.util.Random;
 
 public class Minesweeper
 {
-
 	private MinesweeperTile[][] board;
 
+	private boolean record = false;
 	private boolean autoprint = false;
+
 	private MinesweeperInformation information;
 
 	public Minesweeper(Random random, int width, int height, int bombs)
@@ -89,6 +90,16 @@ public class Minesweeper
 		sb.setLength(sb.length() - 1);
 
 		return sb.toString();
+	}
+
+	public void setRecord(boolean record)
+	{
+		this.record = record;
+	}
+
+	public boolean isRecord()
+	{
+		return this.record;
 	}
 
 	public void setAutoprint(boolean autoprint)
