@@ -146,7 +146,14 @@ public class MinesweeperTile extends MinesweeperChild
 		}
 		else
 		{
-			return getMark().getGraphicsPointer();
+			if (getMark() == MinesweeperMark.UNMARKED)
+			{
+				return MinesweeperGraphicsIndex.NUMBERS.getIndex(neighbours().countMines());
+			}
+			else
+			{
+				return getMark().getGraphicsPointer();
+			}
 		}
 	}
 
