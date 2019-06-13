@@ -2,7 +2,7 @@ package endercrypt.minesweeper;
 
 public class MinesweeperChild
 {
-	private Minesweeper minesweeper;
+	private final Minesweeper minesweeper;
 
 	public MinesweeperChild(MinesweeperChild minesweeperChild)
 	{

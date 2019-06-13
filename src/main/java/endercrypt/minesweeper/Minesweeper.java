@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class Minesweeper
 {
+	private final MinesweeperTile[][] board;
 
-	private MinesweeperTile[][] board;
+	private final MinesweeperInformation information;
 
 	private boolean autoprint = false;
-	private MinesweeperInformation information;
 
 	public Minesweeper(Random random, int width, int height, int bombs)
 	{

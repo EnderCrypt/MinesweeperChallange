@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class MinesweeperTile extends MinesweeperChild
 {
-	private int x, y;
-	private boolean mine;
+	private final int x, y;
+	private final boolean mine;
 
 	private boolean open = false;
 	private MinesweeperMark mark = MinesweeperMark.UNMARKED;
