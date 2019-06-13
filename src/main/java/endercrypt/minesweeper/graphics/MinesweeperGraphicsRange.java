@@ -15,6 +15,7 @@ public class MinesweeperGraphicsRange
 		this.tile_start = tile_start;
 		this.index_start = index_start;
 		this.index_stop = index_stop;
+		this.asciiGenerator = asciiGenerator;
 	}
 
 	public MinesweeperGraphicsPointer getIndex(int index)
